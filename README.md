@@ -14,12 +14,13 @@ A responsive, feature-rich quiz application built using **Next.js**. Test your k
 ---
 
 ## 🖥️ Demo  
-[https://quiz-app-nextjs-naman.vercel.app/](#)  
+[https://quiz-app-nextjs-naman.vercel.app/](#click here)  
 
 ---
 
 ## 📸 Screenshots  
-
+![Screenshot 2025-01-06 023849](https://github.com/user-attachments/assets/c6c8bb3f-08bb-475d-a9db-d340938c3b48)
+  
 
 ---
 
