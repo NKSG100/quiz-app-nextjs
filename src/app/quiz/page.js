@@ -3,6 +3,7 @@
 import { Suspense } from 'react';
 import { useState, useEffect } from 'react';
 import { useSearchParams, usePathname } from 'next/navigation';
+import he from 'he'; // Add this line
 
 const QuizPageContent = () => {
   const pathname = usePathname();
@@ -11,19 +12,18 @@ const QuizPageContent = () => {
 
   const [timeLeft, setTimeLeft] = useState(20);
   const [loading, setLoading] = useState(true);
-  const [questions, setQuestions] = useState([]);  // Always initialize questions as an empty array
+  const [questions, setQuestions] = useState([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [score, setScore] = useState(0);
 
-  // Fetch questions when subject is available
   useEffect(() => {
-    if (subject && questions.length === 0) {  // Only fetch if subject is selected and questions are empty
+    if (subject && questions.length === 0) {
       fetchQuestions(subject);
     }
   }, [subject]);
 
   const fetchQuestions = async (subject) => {
-    setLoading(true);  // Set loading to true before fetching data
+    setLoading(true);
 
     const categoryMap = {
       'Science: Mathematics': 19,
@@ -43,50 +43,53 @@ const QuizPageContent = () => {
       );
       const data = await response.json();
       if (data.results && data.results.length > 0) {
-        setQuestions(data.results);  // Store the fetched questions
-        console.log('Questions fetched:', data.results);
+        const decodedQuestions = data.results.map((question) => ({
+          ...question,
+          question: he.decode(question.question),
+          correct_answer: he.decode(question.correct_answer),
+          incorrect_answers: question.incorrect_answers.map((answer) => he.decode(answer)),
+        }));
+        setQuestions(decodedQuestions);
+        console.log('Questions fetched:', decodedQuestions);
       }
-      setLoading(false);  // Set loading to false once the data is fetched
+      setLoading(false);
     } catch (error) {
       console.error('Error fetching questions:', error);
-      setLoading(false);  // Set loading to false if an error occurs
+      setLoading(false);
     }
   };
 
   const handleAnswer = (isCorrect) => {
     if (isCorrect) {
-      setScore(score + 4);  // Award 4 points for correct answers
+      setScore(score + 4);
     }
     if (currentQuestionIndex < 9) {
-      setCurrentQuestionIndex(currentQuestionIndex + 1);  // Move to the next question
+      setCurrentQuestionIndex(currentQuestionIndex + 1);
     } else {
-      // Store the score in localStorage before redirecting to results page
       localStorage.setItem('quizScore', score);
-      window.location.href = '/results';  // Redirect to the results page when quiz ends
+      window.location.href = '/results';
     }
-    setTimeLeft(20);  // Reset the timer to 20 seconds after each question
+    setTimeLeft(20);
   };
 
   useEffect(() => {
     const timer = setInterval(() => {
       if (timeLeft > 0) {
-        setTimeLeft(timeLeft - 1);  // Decrease the timer by 1 second
+        setTimeLeft(timeLeft - 1);
       } else {
-        handleAnswer(false);  // Automatically move to next question if time runs out
+        handleAnswer(false);
       }
     }, 1000);
 
-    return () => clearInterval(timer);  // Clean up the timer when component unmounts
+    return () => clearInterval(timer);
   }, [timeLeft]);
 
-  // Check if questions are available and loading state is handled
   if (loading) {
-    return <div className="text-center text-xl text-gray-800">Loading questions...</div>;  // Show loading message until data is fetched
+    return <div className="text-center text-xl text-gray-800">Loading questions...</div>;
   }
 
-  // Defensive check to ensure questions is always an array before accessing length
   if (!Array.isArray(questions) || questions.length === 0) {
-    return <div className="text-center text-xl text-gray-800">No questions available</div>;  // Show message if questions are not available
+    return <div className="text-center text-xl text-gray-800">No questions available</div>;
   }
 
   const currentQuestion = questions[currentQuestionIndex];
