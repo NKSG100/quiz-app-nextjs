@@ -1,0 +1,6 @@
+/* Import Tailwind CSS utilities */
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+/* Global reset for consistent layout */
