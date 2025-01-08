@@ -3,7 +3,7 @@ import Link from "next/link";
 
 const WelcomePage = () => {
   return (
-    <div className="w-full max-w-4xl max-h-3xl bg-white/10 backdrop-blur-lg rounded-lg p-6 shadow-lg text-center transform scale-110">
+    <div className="w-full max-w-4xl max-h-5xl bg-white/10 backdrop-blur-lg rounded-lg p-6 shadow-lg text-center transform scale-110">
       <h1 className="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-indigo-400 mb-4">
         Welcome to the Quiz App
       </h1>
