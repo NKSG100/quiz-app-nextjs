@@ -53,9 +53,8 @@ const SelectSubject = () => {
         <div className="flex justify-center mt-8">
           <Link href={`/quiz?subject=${selectedSubject}`}>
             <button className="px-10 py-5 bg-gradient-to-r from-pink-500 to-indigo-500 rounded-lg text-lg font-medium shadow-lg transform transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-4 focus:ring-pink-500 relative overflow-hidden group">
-              <span className="relative z-10 text-white group-hover:text-pink-200 transition-colors duration-300">Start Quiz</span>
+              <span className="relative z-10 text-white group-hover:text-pink-400 transition-colors duration-300">Start Quiz</span>
               <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-pink-500 to-indigo-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-              <div className="absolute inset-0 w-full h-full border-4 border-pink-500 rounded-full opacity-0 group-hover:opacity-100 animate-pulse transition-opacity duration-500"></div>
             </button>
           </Link>
         </div>
