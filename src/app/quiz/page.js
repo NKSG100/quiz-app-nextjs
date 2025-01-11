@@ -15,6 +15,8 @@ const QuizPageContent = () => {
   const [questions, setQuestions] = useState([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [score, setScore] = useState(0);
+  const [selectedAnswer, setSelectedAnswer] = useState(null); // Track selected answer
+  const [showFeedback, setShowFeedback] = useState(false); // Show correct/incorrect feedback
 
   useEffect(() => {
     if (subject && questions.length === 0) {
@@ -59,17 +61,26 @@ const QuizPageContent = () => {
     }
   };
 
-  const handleAnswer = (isCorrect) => {
+  const handleAnswer = (answer) => {
+    setSelectedAnswer(answer);
+    setShowFeedback(true);
+
+    const isCorrect = answer === questions[currentQuestionIndex].correct_answer;
     if (isCorrect) {
       setScore(score + 4);
     }
-    if (currentQuestionIndex < 9) {
-      setCurrentQuestionIndex(currentQuestionIndex + 1);
-    } else {
-      localStorage.setItem('quizScore', score);
-      window.location.href = '/results';
-    }
-    setTimeLeft(20);
+
+    setTimeout(() => {
+      setShowFeedback(false);
+      setSelectedAnswer(null);
+      if (currentQuestionIndex < 9) {
+        setCurrentQuestionIndex(currentQuestionIndex + 1);
+      } else {
+        localStorage.setItem('quizScore', score);
+        window.location.href = '/results';
+      }
+      setTimeLeft(20);
+    }, 2000); // Delay before moving to the next question
   };
 
   useEffect(() => {
@@ -77,7 +88,7 @@ const QuizPageContent = () => {
       if (timeLeft > 0) {
         setTimeLeft(timeLeft - 1);
       } else {
-        handleAnswer(false);
+        handleAnswer(null); // Move to the next question on timeout
       }
     }, 1000);
 
@@ -115,11 +126,19 @@ const QuizPageContent = () => {
         <ul className="space-y-4">
           {currentQuestion.incorrect_answers
             .concat(currentQuestion.correct_answer)
+            .sort(() => Math.random() - 0.5) // Shuffle answers
             .map((answer, idx) => (
               <li
                 key={idx}
-                className="cursor-pointer py-2 px-4 rounded-lg bg-blue-100 hover:bg-blue-200 text-gray-800 transition duration-200 text-center font-bold"
-                onClick={() => handleAnswer(answer === currentQuestion.correct_answer)}
+                className={`cursor-pointer py-2 px-4 rounded-lg text-gray-800 transition duration-200 text-center font-bold ${
+                  showFeedback &&
+                  (answer === currentQuestion.correct_answer
+                    ? 'bg-green-500'
+                    : answer === selectedAnswer
+                    ? 'bg-red-500'
+                    : 'bg-blue-100 hover:bg-blue-200')
+                }`}
+                onClick={() => !showFeedback && handleAnswer(answer)}
               >
                 {answer}
               </li>
