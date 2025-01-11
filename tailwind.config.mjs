@@ -1,7 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
-    './src/**/*.{js,ts,jsx,tsx}', // Ensure your file paths are correct
+    './src/**/*.{js,ts,jsx,tsx}', // Ensure the content paths are correct
   ],
   theme: {
     extend: {
@@ -13,9 +13,8 @@ module.exports = {
         'inter': ['Inter', 'sans-serif'],
       },
       boxShadow: {
-        'lg-custom': '0 8px 15px rgba(0, 0, 0, 0.2)',
-        // Define a custom glow effect
-        'glow': '0 0 10px rgba(255, 255, 255, 0.8), 0 0 20px rgba(255, 255, 255, 0.6)',
+        // Define the glowing border effect
+        'border-glow': '0 0 10px rgba(255, 255, 255, 0.8), 0 0 20px rgba(255, 255, 255, 0.6)',
       },
     },
   },
