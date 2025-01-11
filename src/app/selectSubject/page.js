@@ -52,7 +52,7 @@ const SelectSubject = () => {
       {selectedSubject && (
         <div className="flex justify-center mt-8">
           <Link href={`/quiz?subject=${selectedSubject}`}>
-            <button className="px-10 py-5 bg-gradient-to-r from-pink-500 to-indigo-500 rounded-lg text-lg font-medium shadow-lg transform transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-4 focus:ring-pink-500 relative overflow-hidden group border-2 border-transparent group-hover:shadow-glow">
+            <button className="px-10 py-5 bg-gradient-to-r from-pink-500 to-indigo-500 rounded-lg text-lg font-medium border-2 border-transparent transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-pink-500 group hover:shadow-border-glow">
               <span className="relative z-10 text-white">
                 Start Quiz
               </span>
