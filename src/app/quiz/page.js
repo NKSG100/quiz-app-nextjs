@@ -2,11 +2,10 @@
 
 import { Suspense } from 'react';
 import { useState, useEffect } from 'react';
-import { useSearchParams, usePathname } from 'next/navigation';
-import he from 'he'; // Add this line
+import { useSearchParams } from 'next/navigation';
+import he from 'he';
 
 const QuizPageContent = () => {
-  const pathname = usePathname();
   const searchParams = useSearchParams();
   const subject = searchParams.get('subject');
 
@@ -15,8 +14,8 @@ const QuizPageContent = () => {
   const [questions, setQuestions] = useState([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [score, setScore] = useState(0);
-  const [selectedAnswer, setSelectedAnswer] = useState(null); // Track selected answer
-  const [showFeedback, setShowFeedback] = useState(false); // Show correct/incorrect feedback
+  const [selectedAnswer, setSelectedAnswer] = useState(null);
+  const [showFeedback, setShowFeedback] = useState(false);
 
   useEffect(() => {
     if (subject && questions.length === 0) {
@@ -45,14 +44,20 @@ const QuizPageContent = () => {
       );
       const data = await response.json();
       if (data.results && data.results.length > 0) {
-        const decodedQuestions = data.results.map((question) => ({
-          ...question,
-          question: he.decode(question.question),
-          correct_answer: he.decode(question.correct_answer),
-          incorrect_answers: question.incorrect_answers.map((answer) => he.decode(answer)),
-        }));
+        const decodedQuestions = data.results.map((question) => {
+          const allAnswers = [
+            ...question.incorrect_answers.map((answer) => he.decode(answer)),
+            he.decode(question.correct_answer),
+          ];
+          // Shuffle once and store the order
+          return {
+            ...question,
+            question: he.decode(question.question),
+            correct_answer: he.decode(question.correct_answer),
+            answers: allAnswers.sort(() => Math.random() - 0.5), // Shuffle once
+          };
+        });
         setQuestions(decodedQuestions);
-        console.log('Questions fetched:', decodedQuestions);
       }
       setLoading(false);
     } catch (error) {
@@ -80,7 +85,7 @@ const QuizPageContent = () => {
         window.location.href = '/results';
       }
       setTimeLeft(20);
-    }, 2000); // Delay before moving to the next question
+    }, 2000); // 2-second delay
   };
 
   useEffect(() => {
@@ -124,25 +129,23 @@ const QuizPageContent = () => {
           Q{currentQuestionIndex + 1}. {currentQuestion.question}
         </h3>
         <ul className="space-y-4">
-          {currentQuestion.incorrect_answers
-            .concat(currentQuestion.correct_answer)
-            .sort(() => Math.random() - 0.5) // Shuffle answers
-            .map((answer, idx) => (
-              <li
-                key={idx}
-                className={`cursor-pointer py-2 px-4 rounded-lg text-gray-800 transition duration-200 text-center font-bold ${
-                  showFeedback &&
-                  (answer === currentQuestion.correct_answer
+          {currentQuestion.answers.map((answer, idx) => (
+            <li
+              key={idx}
+              className={`cursor-pointer py-2 px-4 rounded-lg text-gray-800 transition duration-200 text-center font-bold ${
+                showFeedback
+                  ? answer === currentQuestion.correct_answer
                     ? 'bg-green-500'
                     : answer === selectedAnswer
                     ? 'bg-red-500'
-                    : 'bg-blue-100 hover:bg-blue-200')
-                }`}
-                onClick={() => !showFeedback && handleAnswer(answer)}
-              >
-                {answer}
-              </li>
-            ))}
+                    : 'bg-blue-100'
+                  : 'bg-blue-100 hover:bg-blue-200'
+              }`}
+              onClick={() => !showFeedback && handleAnswer(answer)}
+            >
+              {answer}
+            </li>
+          ))}
         </ul>
       </div>
     </div>
