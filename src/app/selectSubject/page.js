@@ -26,7 +26,7 @@ const SelectSubject = () => {
           }`}
           onClick={() => handleSubjectChange('Science: Mathematics')}
         >
-          Science: Mathematics
+          Mathematics
         </button>
 
         <button
@@ -35,7 +35,7 @@ const SelectSubject = () => {
           }`}
           onClick={() => handleSubjectChange('Science: Computers')}
         >
-          Science: Computers
+          Computer Science
         </button>
 
         <button
