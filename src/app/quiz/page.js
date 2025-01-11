@@ -101,17 +101,17 @@ const QuizPageContent = () => {
   }, [timeLeft]);
 
   if (loading) {
-    return <div className="text-center text-xl text-gray-800">Loading questions...</div>;
+    return <div className="text-center text-xl text-white">Loading questions...</div>;
   }
 
   if (!Array.isArray(questions) || questions.length === 0) {
-    return <div className="text-center text-xl text-gray-800">No questions available</div>;
+    return <div className="text-center text-xl text-white">No questions available</div>;
   }
 
   const currentQuestion = questions[currentQuestionIndex];
 
   if (!currentQuestion) {
-    return <div className="text-center text-xl text-gray-800">Loading question...</div>;
+    return <div className="text-center text-xl text-white">Loading question...</div>;
   }
 
   return (
