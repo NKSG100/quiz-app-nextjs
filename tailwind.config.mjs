@@ -5,6 +5,9 @@ module.exports = {
   ],
   theme: {
     extend: {
+      scale: {
+        '118': '1.18', // Adds scale-118
+      },
       colors: {
         'primary': '#9333ea',
         'secondary': '#3b82f6',
