@@ -1,18 +1,39 @@
-import next from "@next/eslint-plugin-next";
+import next from '@next/eslint-plugin-next';
+import js from '@eslint/js';
+import reactRecommended from 'eslint-plugin-react/configs/recommended.js';
+import globals from 'globals';
 
 export default [
+  js.configs.recommended,
   {
-    plugins: {
-      "@next/next": next,
-    },
+    ...reactRecommended,
     rules: {
-      // Add your custom rules here
+      ...reactRecommended.rules,
+      'react/react-in-jsx-scope': 'off',
     },
   },
   {
-    files: ["**/*.js", "**/*.jsx", "**/*.ts", "**/*.tsx"],
+    plugins: {
+      '@next/next': next,
+    },
     rules: {
-      // Rules for JavaScript and TypeScript files
+      ...next.configs.recommended.rules,
+    },
+  },
+  {
+    languageOptions: {
+      globals: {
+        ...globals.browser,
+        ...globals.node,
+        ...globals.es2021,
+      },
+      parserOptions: {
+        ecmaVersion: 2021,
+        sourceType: 'module',
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
     },
   },
 ];
