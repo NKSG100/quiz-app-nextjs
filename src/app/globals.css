@@ -1,6 +1,8 @@
 /* Import Tailwind CSS utilities */
-@import "tailwindcss/base";
-@import "tailwindcss/components";
-@import "tailwindcss/utilities";
+@import "tailwindcss";
+
+body {
+    font-family: 'Inter', sans-serif;
+}
 
 /* Global reset for consistent layout */

@@ -2,64 +2,50 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import { motion } from 'framer-motion';
+import SubjectCard from '../components/SubjectCard';
 
 const SelectSubject = () => {
   const [selectedSubject, setSelectedSubject] = useState('');
 
-  const handleSubjectChange = (subject) => {
-    setSelectedSubject(subject);
-  };
+  const subjects = [
+    { name: 'Mathematics', value: 'Science: Mathematics' },
+    { name: 'Computer Science', value: 'Science: Computers' },
+    { name: 'General Knowledge', value: 'General Knowledge' },
+  ];
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-transparent px-4 py-16">
-      {/* Title */}
-      <h1 className="text-4xl font-extrabold mb-10 text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-indigo-500">
+    <div className="flex flex-col items-center justify-center min-h-screen pb-45 overflow-hidden">
+      <h1 className="text-4xl font-extrabold mb-8 text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-indigo-400">
         Select a Subject
       </h1>
-
-      {/* Subject Buttons Container (Horizontal) */}
-      <div className="w-full max-w-4xl flex justify-between gap-6 mb-12">
-        {/* Subject Buttons */}
-        <button
-          className={`px-6 py-4 bg-white/10 rounded-lg shadow-md text-lg font-medium backdrop-blur-md hover:scale-105 transition-all duration-300 ${
-            selectedSubject === 'Science: Mathematics' ? 'ring-4 ring-pink-500' : ''
-          }`}
-          onClick={() => handleSubjectChange('Science: Mathematics')}
-        >
-          Mathematics
-        </button>
-
-        <button
-          className={`px-6 py-4 bg-white/10 rounded-lg shadow-md text-lg font-medium backdrop-blur-md hover:scale-105 transition-all duration-300 ${
-            selectedSubject === 'Science: Computers' ? 'ring-4 ring-pink-500' : ''
-          }`}
-          onClick={() => handleSubjectChange('Science: Computers')}
-        >
-          Computer Science
-        </button>
-
-        <button
-          className={`px-6 py-4 bg-white/10 rounded-lg shadow-md text-lg font-medium backdrop-blur-md hover:scale-105 transition-all duration-300 ${
-            selectedSubject === 'General Knowledge' ? 'ring-4 ring-pink-500' : ''
-          }`}
-          onClick={() => handleSubjectChange('General Knowledge')}
-        >
-          General Knowledge
-        </button>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-4xl px-4">
+        {subjects.map((subject, idx) => (
+          <SubjectCard
+            key={idx}
+            subject={subject}
+            selectedSubject={selectedSubject}
+            onSelect={setSelectedSubject}
+          />
+        ))}
       </div>
-
-      {/* "Start Quiz" Button */}
       {selectedSubject && (
-        <div className="flex justify-center mt-8">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="mt-8"
+        >
           <Link href={`/quiz?subject=${selectedSubject}`}>
-            <button className="px-10 py-5 bg-gradient-to-r from-pink-500 to-indigo-500 rounded-lg text-lg font-medium border-2 border-transparent transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-pink-500 group hover:shadow-border-glow">
-              <span className="relative z-10 text-white">
-                Start Quiz
-              </span>
-              <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-pink-500 to-indigo-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-            </button>
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="px-8 py-3 bg-gradient-to-r from-pink-500 to-indigo-500 rounded-lg text-lg font-medium shadow-md hover:shadow-lg transition-all"
+            >
+              Start Quiz
+            </motion.button>
           </Link>
-        </div>
+        </motion.div>
       )}
     </div>
   );

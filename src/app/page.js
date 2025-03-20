@@ -1,4 +1,5 @@
-// src/app/page.js
-import WelcomePage from './welcome/page';
+import { redirect } from 'next/navigation';
 
-export default WelcomePage;
+export default function Home() {
+  redirect('/welcome');
+}
