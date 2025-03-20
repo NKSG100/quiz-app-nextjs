@@ -1,12 +1,13 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { Suspense, useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { motion } from 'framer-motion';
 import QuizCard from '../components/QuizCard';
 import he from 'he';
 
-const QuizPage = () => {
+// Wrapper component to handle useSearchParams
+function QuizPageContent() {
   const searchParams = useSearchParams();
   const subject = searchParams.get('subject');
 
@@ -102,6 +103,13 @@ const QuizPage = () => {
       />
     </div>
   );
-};
+}
 
-export default QuizPage;
+// Wrap QuizPageContent in Suspense
+export default function QuizPage() {
+  return (
+    <Suspense fallback={<div className="text-center text-xl text-white">Loading...</div>}>
+      <QuizPageContent />
+    </Suspense>
+  );
+}
