@@ -17,6 +17,7 @@ function QuizPageContent() {
   const [score, setScore] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const [showFeedback, setShowFeedback] = useState(false);
+  const [shuffledOptions, setShuffledOptions] = useState([]);
 
   useEffect(() => {
     if (subject && questions.length === 0) {
@@ -50,6 +51,16 @@ function QuizPageContent() {
       console.error('Error fetching questions:', error);
     }
   };
+
+  // Shuffle options when currentQuestionIndex changes
+  useEffect(() => {
+    if (questions.length > 0 && questions[currentQuestionIndex]) {
+      const currentQ = questions[currentQuestionIndex];
+      const options = [...currentQ.incorrect_answers, currentQ.correct_answer];
+      const shuffled = options.sort(() => Math.random() - 0.5);
+      setShuffledOptions(shuffled);
+    }
+  }, [questions, currentQuestionIndex]);
 
   const handleAnswer = (answer) => {
     setSelectedAnswer(answer);
@@ -100,6 +111,7 @@ function QuizPageContent() {
         selectedAnswer={selectedAnswer}
         showFeedback={showFeedback}
         handleAnswer={handleAnswer}
+        shuffledOptions={shuffledOptions} // ✅ passing the shuffled options
       />
     </div>
   );

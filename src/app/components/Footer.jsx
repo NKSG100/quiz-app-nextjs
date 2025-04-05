@@ -10,7 +10,7 @@ const Footer = () => {
       transition={{ duration: 0.5 }}
       className="fixed bottom-0 w-full bg-black/20 backdrop-blur-md py-4 text-center border-t border-white/10"
     >
-      <p>&copy; {new Date().getFullYear()} Quiz App. All rights reserved.</p>
+      <p>&copy; {new Date().getFullYear()} Quiz App by Naman Kumar Singh. All rights reserved.</p>
     </motion.footer>
   );
 };

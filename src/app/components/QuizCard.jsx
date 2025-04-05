@@ -10,6 +10,7 @@ const QuizCard = ({
   selectedAnswer,
   showFeedback,
   handleAnswer,
+  shuffledOptions, // ✅ passed from parent
 }) => {
   return (
     <motion.div
@@ -28,7 +29,7 @@ const QuizCard = ({
         Q{currentQuestionIndex + 1}. {currentQuestion.question}
       </h3>
       <ul className="space-y-3">
-        {currentQuestion.incorrect_answers.concat(currentQuestion.correct_answer).map((answer, idx) => (
+        {shuffledOptions.map((answer, idx) => (
           <motion.li
             key={idx}
             whileHover={{ scale: 1.02 }}
